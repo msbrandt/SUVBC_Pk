@@ -4,7 +4,6 @@
  *
  * @package   SUVBC roster
  * @author    Mikey Brandt 
- * @license   GPL-2.0+
  */
 /**
  * Plugin class.
@@ -144,11 +143,11 @@ class SUVBC_slider {
 			
 		}
 
-	
+	// activiate jQuery for plugin
 	public function activate_SUVBC_slider_jquery() {
 		wp_enqueue_script( 'jquery' );
 	}
-
+	//create custom post type for slider posts 
 	public function SUVBC_slider_post(){
 		register_post_type( 'suvbc_img',
 			array( 'labels' => 

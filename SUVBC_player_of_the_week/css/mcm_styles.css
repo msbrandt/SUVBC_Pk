@@ -40,3 +40,11 @@
 	text-align: center;
 	margin-bottom: 10px;
 }
+#mcm_response{
+	display: none;
+	color: #00ff00;
+	font-family: 'Exo 2', sans-serif !important; 
+	font-size: 20px;
+
+
+}

@@ -2,7 +2,6 @@
 /**
 * @package   SUVBC Slider
 * @author    Mike Brandt 
-* @license   GPL-2.0+
 *
 *Plugin Name: SUVBC Showcase slider plugin
 *Description: Showcase slider on main screen 

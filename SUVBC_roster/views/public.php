@@ -1,6 +1,6 @@
 <?php 
 function suvbc_add_shortcode(){
-	
+	//get all select players infromation from suvbc_Roster table 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'suvbc_Roster';
 	$display_query = $wpdb->get_results("SELECT * FROM wp_suvbc_Roster ORDER BY player_number");
@@ -11,11 +11,11 @@ function suvbc_add_shortcode(){
 <table id="player_table_suvbc">
 	<thead>
 		<tr>
-			<th>#</th>
-			<th>name</th>
-			<th>Pos</th>
-			<th>CL</th>
-			<th>Hometown</th>
+			<th><?php _e( '#', 'SUVBC_domain' ); ?></th>
+			<th><?php _e( 'name', 'SUVBC_domain' ); ?></th>
+			<th><?php _e( 'Pos', 'SUVBC_domain' ); ?></th>
+			<th><?php _e( 'CL', 'SUVBC_domain' ); ?></th>
+			<th><?php _e( 'Hometown', 'SUVBC_domain' ); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -34,6 +34,8 @@ function suvbc_add_shortcode(){
 	}
 	?>
 	</tbody>
+<div class="clear"></div>
+	
 </table>
 <div id="player_info_suvbc">
 	<div id="image_padding_suvbc">
@@ -53,6 +55,7 @@ function suvbc_add_shortcode(){
 	</div>
 <?php
 }
+//type [SUVBC_Roster] in roster comments to add roster to main page 
 add_shortcode( 'SUVBC_Roster', 'suvbc_add_shortcode' ); 
 
 ?>

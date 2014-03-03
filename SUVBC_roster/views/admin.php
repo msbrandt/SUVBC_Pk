@@ -13,24 +13,25 @@
 		<input type="text" class="admin_input" id="suvbc_name" name="suvbc_name" placeholder="Name" value=""/>
 				
 		<select name="suvbc_pos" class="admin_input" id="suvbc_pos">
-			<option>Position</option>		
-			<option value="MB">Middle</option>		
-			<option value="OH">Outside</option>		
-			<option value="S">Setter</option>		
-			<option value="L">Libero</option>		
-			<option value="DS">Defensive Specilas</option>
+			<option><?php _e('Position', 'SUVBC_domain' ); ?></option>		
+			<option value="MB"><?php _e('Middle', 'SUVBC_domain' ); ?></option>		
+			<option value="OH"><?php _e('Outside', 'SUVBC_domain' ); ?></option>		
+			<option value="S"><?php _e('Setter', 'SUVBC_domain' ); ?></option>		
+			<option value="L"><?php _e('Libero', 'SUVBC_domain' ); ?></option>		
+			<option value="DS"><?php _e('Defensive Specilas', 'SUVBC_domain' ); ?></option>
 		</select>			
 		<select name="suvbc_year" class="admin_input" id="suvbc_year">
-			<option>Year</option>		
-			<option value="FR">Freshman</option>		
-			<option value="SO">Sophomore</option>		
-			<option value="JR">Junior</option>		
-			<option value="SR">Senior</option>		
-			<option value="GS">Graduate</option>		
+			<option><?php _e( 'Year', 'SUVBC_domain' ); ?></option>		
+			<option value="FR"><?php _e( 'Freshman', 'SUVBC_domain' ); ?></option>		
+			<option value="SO"><?php _e( 'Sophomore', 'SUVBC_domain' ); ?></option>		
+			<option value="JR"><?php _e( 'Junior', 'SUVBC_domain' ); ?></option>		
+			<option value="SR"><?php _e( 'Senior', 'SUVBC_domain' ); ?></option>		
+			<option value="GS"><?php _e( 'Graduate', 'SUVBC_domain' ); ?></option>		
 		</select>
 		<input type="text" class="admin_input" id="suvbc_ht" name="suvbc_ht" placeholder="Hometown" value=""/>
 
-		<input type="text" class="admin_input" id="suvbc_img" name="suvbc_img" placeholder="Player Image" value="" /><div id="suvbc_browes_media">Search Image</div>
+		<input type="text" class="admin_input" id="suvbc_img" name="suvbc_img" placeholder="Player Image" value="" /><div id="suvbc_browes_media"><?php _e( 'Search Image', 'SUVBC_domain' ); ?>
+			</div>
 
 		<textarea rows="10" cols="50" class="admin_input" name="suvbc_bio" placeholder="Player Bio"></textarea>
 		<p>
@@ -48,20 +49,21 @@
 		<table id="admin_roster" cellpadding="5" cellspacing="5" width="100%">	
 			<thead>
 				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th>Pos.</th>
-					<th>Cl.</th>
-					<th>Hometown</th>
+					<th><?php _e( '#', 'SUVBC_domain' ); ?></th>
+					<th><?php _e( 'Name', 'SUVBC_domain' ); ?></th>
+					<th><?php _e( 'Pos.', 'SUVBC_domain' ); ?></th>
+					<th><?php _e( 'Cl.', 'SUVBC_domain' ); ?></th>
+					<th><?php _e( 'Hometown', 'SUVBC_domain' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 
  			<?php
+ 			//display table with all players. This will be used to select players from to edit or remove
 				global $wpdb;
 
 				$table_name = $wpdb->prefix . 'suvbc_Roster';
-				$admin_query = $wpdb->get_results("SELECT * FROM wp_suvbc_Roster"); 
+				$admin_query = $wpdb->get_results("SELECT * FROM wp_suvbc_Roster ORDER BY player_number"); 
 				foreach ($admin_query as $print){
 					echo '<tr class="player_suvbc" id="'.$print->player_number.'">';
 					echo '<td>'.$print->player_number.'</td>';

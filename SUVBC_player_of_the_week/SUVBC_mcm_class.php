@@ -101,7 +101,6 @@ class SUVBC_mcm {
 	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
 	 */
 	public static function activate() {
-		// TODO: Define activation functionality here
 		include_once('views/public.php');
 	}
 
@@ -113,7 +112,14 @@ class SUVBC_mcm {
 	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
-		// TODO: Define deactivation functionality here
+		// Remove suvbc_featured_players table from db
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'suvbc_featured_players';
+
+		$wpdb->query("DROP TABLE IF EXISTS $table_name");
+
+
+
 	}
 	/**
 	 * Fired when the plugin is deactivated.
@@ -151,27 +157,30 @@ class SUVBC_mcm {
 			
 		}
 
-	
+	//include jQuery
 	public function activate_SUVBC_mcm_jquery() {
 		wp_enqueue_script( 'jquery' );
 	}
+	//include admin scrips
 	public function enqueue_mcm_admin_scripts() {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
 	}
+	//include media libery from forms  
 	public function suvbc_mcm_custom_media(){
 		wp_enqueue_media();
 		
 	}
-
+	//add menu button to dashboard panal  
 	public function add_SUVBC_mcm_admin_menu(){
 		add_menu_page(
-			__( 'SUVBC mcm'),
-			__( 'SUVBC mcm' ),
+			__( 'SUVBC Weekly Player'),
+			__( 'SUVBC Weekly Player' ),
 			'manage_options',
 			$this->plugin_slug,
 			array( $this, 'display_SUVBC_mcm_admin_page')
 			);
 	}
+	//view for dashboard panal
 	public function display_SUVBC_mcm_admin_page() {
 		include_once( 'views/admin.php' );
 
@@ -201,10 +210,11 @@ class SUVBC_mcm {
 		register_setting( 'suvbc_mcm_group', 'mcm_set');
 	}
 
+	//install suvbc_featured_players table 
 	public function mcm_table_install(){
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'mcm_slider_fet';
+		$table_name = $wpdb->prefix . 'suvbc_featured_players';
 
 		$sql = "CREATE TABLE " . $table_name . "(
 			mcm_id MEDIUMINT NOT NULL AUTO_INCREMENT,
@@ -217,14 +227,14 @@ class SUVBC_mcm {
 		dbDelta( $sql );
 	}
 
-
+	//insert new players to suvbc_featured_players table 
 	public function mcm_slider_fet_handler(){
 		global $wpdb;
-		$table_name = $wpdb->prefix . 'mcm_slider_fet';
-
-		$m_image = $_REQUEST['mcm_img'];
-		$m_name  = $_REQUEST['mcm_name'];
-		$m_decs  = $_REQUEST['mcm_dec'];
+		$table_name = $wpdb->prefix . 'suvbc_featured_players';
+		
+		$m_image = stripslashes( $_REQUEST['mcm_img'] );
+		$m_name  = stripslashes( $_REQUEST['mcm_name'] );
+		$m_decs  = stripslashes( $_REQUEST['mcm_dec'] );
 
 		$wpdb->insert( 
 			$table_name, 
@@ -252,11 +262,11 @@ class SUVBC_mcm {
 
 		exit();
 	}
-
+	//delete players from suvbc_featured_players table
 	public function mcm_slider_delete_handler(){
 		global $wpdb;
 		
-		$table_name = $wpdb->prefix . 'mcm_slider_fet';
+		$table_name = $wpdb->prefix . 'suvbc_featured_players';
 
 		$clicked_id = $_REQUEST['mcm_clicked'];
 		

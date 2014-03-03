@@ -2,8 +2,9 @@
 function display_mcm(){
 	
 	global $wpdb;
-	$table_name = $wpdb->prefix . 'mcm_slider_fet';
+	$table_name = $wpdb->prefix . 'suvbc_featured_players';
 	
+	//get all players in suvbc_featured_players table 
 	$display_query = $wpdb->get_results("SELECT * FROM ".$table_name." ");
 ?>
 
@@ -28,7 +29,8 @@ function display_mcm(){
 
 	<ul id="mcm_thumbs">
 		<?php foreach( $display_query as $thumb_suvbc ){ ?>
-				
+		
+		<!-- Display all user thumbnails -->
 		<li id="<?php echo $thumb_suvbc->mcm_id; ?>"><img src="<?php echo $thumb_suvbc->mcm_image; ?>" alt="suvbc_image_thumb<?php echo $thumb_suvbc->mcm_id; ?>" /></li>
 		<?php }; ?>
 
@@ -41,5 +43,6 @@ function display_mcm(){
 <?php
 
 	}
-add_shortcode( 'mcm', 'display_mcm' ); 
+//add this to post to display plugin 
+add_shortcode( 'suvbc_mcm', 'display_mcm' ); 
 ?>

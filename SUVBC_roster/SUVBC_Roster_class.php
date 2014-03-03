@@ -100,7 +100,6 @@ class SUVBC_ROSTER {
 	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
 	 */
 	public static function activate() {
-		// TODO: Define activation functionality here
 		include_once('views/public.php');
 	}
 
@@ -112,7 +111,12 @@ class SUVBC_ROSTER {
 	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
-		// TODO: Define deactivation functionality here
+		//remove roster table from db
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'suvbc_Roster';
+
+		$wpdb->query("DROP TABLE IF EXISTS $table_name");
+
 	}
 	/**
 	 * Fired when the plugin is deactivated.
@@ -210,7 +214,7 @@ class SUVBC_ROSTER {
 	public function SUVBC_settings() {
 		register_setting( 'suvbc_rotster_group', 'roster_set');
 	}
-
+	//Creates table for roster to be stored and accessed from 
 	public function SUVBC_roster_install(){
 		global $wpdb;
 
@@ -230,10 +234,11 @@ class SUVBC_ROSTER {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql );
 	}
-
+	// Actions for saving new players to table 
 	public function suvbc_save_player_handler(){
 		global $wpdb;
 
+		//ajax user information 
 		$table_name = $wpdb->prefix . 'suvbc_Roster';
 			$f_num = strip_tags($_REQUEST['form_num']);
 			$f_name = strip_tags($_REQUEST['form_name']);
@@ -243,7 +248,7 @@ class SUVBC_ROSTER {
 			$f_img = strip_tags($_REQUEST['form_img']);
 			$f_bio = strip_tags($_REQUEST['form_bio']);
 	
-
+		//inser all infromation into suvbc_Roster table 
 		$wpdb->insert(
 			$table_name,
 			array(
@@ -288,13 +293,12 @@ class SUVBC_ROSTER {
 
 		exit();
 	}
-
+	//Edit player actions 
 	public function suvbc_edit_player_handler(){
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'suvbc_Roster';
 
 		$player_ID = stripcslashes($_REQUEST['pl_ID']);
-		// echo $player_ID;
 
 		//Data from user input 
 		$playerInfo = array(
@@ -308,7 +312,7 @@ class SUVBC_ROSTER {
 		);
 
 
-
+		//get all data for selected user
 		$editQuery = $wpdb->get_results("SELECT * FROM " . $table_name . " WHERE player_id = '".$player_ID."'");
 
 		foreach ($editQuery as $k) {
@@ -331,22 +335,19 @@ class SUVBC_ROSTER {
 			'player_img' => $nImg,
 			'player_bio' => $nBio 
 			);
-		
+		//check to see if any fields have changed
 		$results = array_diff_assoc( $playerInfo, $neweditArray );
 
-		// print_r($neweditArray );
-		// print_r( $playerInfo );
-		
+
+		//If nothing has changed...		
 		if ( !$results ){
 			echo 'Nothing has changed. Try again later';
+		//Update changed information for selected user 
 		} else {
 			$wpdb->update( $table_name, $results, array( 'player_id' => $pID) );
 			echo $nName . ' has been updated';
 
 		}
-		// for( $w=0;)
-
-		// print_r( $results );
 
 		unset($results);
 		unset($neweditArray);
@@ -355,6 +356,7 @@ class SUVBC_ROSTER {
 		exit();
 
 	}
+	//Delete player actions 
 	public function suvbc_delete_player_handler(){
 		global $wpdb;
 

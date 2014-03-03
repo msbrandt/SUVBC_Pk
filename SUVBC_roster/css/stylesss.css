@@ -9,13 +9,16 @@ textarea{
 }
 .display_admin_table{
 	float: left;
-	margin-left: 100px;
+	margin-left: 40px;
 }
 table th{
 	padding-right: 50px;
 	/*border-right: 1px solid #000;*/
 	border-bottom: 1px solid #000;
 	/*border-left: 1px solid #000;*/
+}
+table#admin_roster{
+	float: left;
 }
 
 form#roster_suvbc{
@@ -51,4 +54,7 @@ select{
 }
 .eqid{
 	display: none;
+}
+.clear{
+	clear: both;
 }

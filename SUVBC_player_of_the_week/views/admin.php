@@ -8,23 +8,24 @@
 		<h2><?php _e( 'Add or remove players from mcm slider', 'SUVBC_domain'); ?></h2>
 
 		<input type='text' id="mcm_image" class="mcm_input" name="mcm_file" placeholder="Add picture"><div id="mcm_img_button">Browse</div>
-		<input type='text' class="mcm_input" name="mcm_name" placeholder="Player">
+		<input type='text' class="mcm_input" name="mcm_name" placeholder="Player Name">
 		<textarea cols="45" rows="10" class="mcm_input" name="mcm_info" placeholder="Add decription"></textarea>
 		<input type="button" class="mcm_bnt" id="mcm_bnt"value="Save" />
 		<input type="button" class="mcm_bnt" id="mcm_bntD"value="Delete" />
 	</form>
 
 	<table id="active_mcm">
-		<h2><?php _e( 'Active mcm', 'SUVBC_domain' ); ?> </h2>
+		<h2><?php _e( 'Added Players', 'SUVBC_domain' ); ?> </h2>
 
 		<tbody id="mcm_slide">
 			<?php 
 				global $wpdb;
 
-				$table_name = $wpdb->prefix . 'mcm_slider_fet';
+				$table_name = $wpdb->prefix . 'suvbc_featured_players';
 
 				$admin_mcm_query = $wpdb->get_results("SELECT * FROM " . $table_name . " "); 
-
+				
+				//add new player to active table on admin page 
 				foreach ($admin_mcm_query as $vac) {
 					echo '<tr id="' . $vac->mcm_id . '">';
 					echo '<td>' . $vac->mcm_name . '</td>';

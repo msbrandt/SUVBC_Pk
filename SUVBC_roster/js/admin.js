@@ -1,26 +1,27 @@
 jQuery(function ($) {
-
+//save players action 
 	$('#save').click(function(){
-
+		//cont how many inputs their is 
 		var formCount = $('form#roster_suvbc .admin_input').length,
 			formData = [];
 
-		
+		//pull all of user input from form 
 		for(var q=0; q<formCount; q++){
 			getFormData = $('form#roster_suvbc .admin_input:eq('+ q +')').val();
 		 		formData.push(getFormData);
 
 		}
-		var form_id    = formData[0],
-			form_num   = formData[1],
-			form_name  = formData[2],
-			form_pos   = formData[3],
-			form_class = formData[4],
-			form_ht    = formData[5],
-			form_img   = formData[6],
-			form_bio   = formData[7];
+		//user input 
+		var form_id    = formData[0],  //auto incrementing id
+			form_num   = formData[1],  // number
+			form_name  = formData[2],  // name
+			form_pos   = formData[3],  // position
+			form_class = formData[4],  // Year 
+			form_ht    = formData[5],  // Hometown
+			form_img   = formData[6],  // Image
+			form_bio   = formData[7];  // Bio
 
-
+		//ajax request
 		$.ajax({
 			url: ajaxurl,
 			type: 'POST',
@@ -35,8 +36,9 @@ jQuery(function ($) {
 				form_img: form_img,
 				form_bio: form_bio,				
 			},
+			//on sucess, add player to table and give the user a response 
 			success: function(response){
-				$('.target').html('Player added');
+				$('.target').html('Player added').delay(5000).fadeOut();
 				$('table#admin_roster tbody').append(response);
 				$('form#roster_suvbc .admin_input').val('');
 
@@ -62,29 +64,31 @@ jQuery(function ($) {
 		}	
 
 	})
-	
+	//edit players actions 
 	$('#edit').click(function(){
 
+		//get number of inputs
 		var inputCount = $('form#roster_suvbc .admin_input').length;
 		var newData = [];
 
+		//selected player's ID
 		var pl_ID = $('table#admin_roster tbody tr.selectedPlayer td.eqid').html();
-		console.log('player id ' + pl_ID);
 
+		//get all input text from form 
 		for(var m=0; m<inputCount; m++){
 			v = $('form#roster_suvbc .admin_input:eq('+ m +')').val();
 		 		newData.push(v);
 		}
 
-		var plyID    = newData[0],
-			plyNum   = newData[1],
-			plyName  = newData[2],
-			plyPos   = newData[3],
-			plyClass = newData[4],
-			plyHt    = newData[5],
-			plyImg   = newData[6],
-			plyBio   = newData[7];
-			console.log(plyID);
+		var plyID    = newData[0], //incromented ID
+			plyNum   = newData[1], //number
+			plyName  = newData[2], //name
+			plyPos   = newData[3], //position
+			plyClass = newData[4], //year
+			plyHt    = newData[5], //hometown
+			plyImg   = newData[6], //image
+			plyBio   = newData[7]; //bio
+
 			$.ajax({
 				url: ajaxurl,
 				type: 'POST',
@@ -99,8 +103,9 @@ jQuery(function ($) {
 					plyBio: plyBio,
 					pl_ID: pl_ID,
 				},
+				//if a field has been changed, update it in table and reload the page
 				success: function(response){
-					$('.target').html(response);
+					$('.target').html('Player Updated').delay(5000).fadeOut();
 					$('table#admin_roster tr').css('background', 'none');
 					$('form#roster_suvbc .admin_input').val('');
 					window.location.reload();
@@ -114,32 +119,35 @@ jQuery(function ($) {
 
 	})
 
-
+	// Delete player actoon 
 	$('#delete').click(function(){
-
+		//get hidden ID
+		var suvbc_roster_confirm = confirm('Do you want to delete this player?');
 		var ss = $('.selectedPlayer td:last').html();
+		if (suvbc_roster_confirm){		
+			$.ajax({
+					url: ajaxurl,
+					type: 'POST',
+					data: {
+						action: 'suvbc_delete_player',
+						deleteID: ss,
 
-		$.ajax({
-			url: ajaxurl,
-			type: 'POST',
-			data: {
-				action: 'suvbc_delete_player',
-				deleteID: ss,
-
-			},
-			success: function(response){
-				$('.target').html('Player deleted!');
-				$('table#admin_roster tbody tr#'+  response + ' ').remove();
-				$('form#roster_suvbc .admin_input').val('');
-				window.location.reload();
+					},
+					//Remove deleted player form table 
+					success: function(response){
+						$('.target').html('Player deleted!').delay(5000).fadeOut();
+						$('table#admin_roster tbody tr#'+  response + ' ').remove();
+						$('form#roster_suvbc .admin_input').val('');
+						window.location.reload();
 
 
-			}
+					}
 		})
+		}
 	})
 
 
-
+// Open wordpress media uploader when search image is clicked 
     $('#suvbc_browes_media').click(function(e) {
     	var suvbc_media_button = $(this);
     	e.preventDefault();
